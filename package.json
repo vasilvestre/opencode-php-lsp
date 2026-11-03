@@ -1,6 +1,6 @@
 {
   "name": "@vasilvestre/opencode-php-lsp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "PHP tools for OpenCode v2: diagnostics, definition, references and hover from real language servers",
   "keywords": [
     "opencode",
