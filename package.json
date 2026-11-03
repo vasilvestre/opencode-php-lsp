@@ -1,0 +1,45 @@
+{
+  "name": "@vasilvestre/opencode-php-lsp",
+  "version": "0.1.0",
+  "description": "PHP tools for OpenCode v2: diagnostics, definition, references and hover from real language servers",
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "php",
+    "symfony",
+    "lsp"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "vasilvestre",
+    "url": "https://github.com/vasilvestre"
+  },
+  "homepage": "https://github.com/vasilvestre/opencode-php-lsp#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vasilvestre/opencode-php-lsp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vasilvestre/opencode-php-lsp/issues"
+  },
+  "type": "module",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test index.test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

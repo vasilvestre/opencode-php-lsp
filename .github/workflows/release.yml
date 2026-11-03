@@ -1,0 +1,57 @@
+name: Release
+
+# Publishes when the version in package.json is not on npm yet.
+# Bump "version" in the same commit that ships the change.
+# If you forget, this workflow fails instead of publishing a surprise.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      # Trusted publishing: npm exchanges this job's OIDC token for a
+      # short-lived publish token. A NPM_TOKEN secret would win over it and
+      # fail with a 404.
+      - name: Use the latest npm
+        run: npm install -g npm@latest
+
+      - name: Read the version
+        id: local
+        run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Read the published version
+        id: published
+        run: |
+          set +e
+          version=$(npm view "$(node -p "require('./package.json').name")" version 2>/dev/null)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Skip when already published
+        if: steps.local.outputs.version == steps.published.outputs.version
+        run: echo "Version ${{ steps.local.outputs.version }} is already on npm, nothing to do."
+
+      - name: Test
+        if: steps.local.outputs.version != steps.published.outputs.version
+        run: npm test
+
+      - name: Build
+        if: steps.local.outputs.version != steps.published.outputs.version
+        run: npm run build --if-present
+
+      - name: Publish
+        if: steps.local.outputs.version != steps.published.outputs.version
+        run: npm publish --access public
