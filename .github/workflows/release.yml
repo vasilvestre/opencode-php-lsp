@@ -54,4 +54,4 @@ jobs:
 
       - name: Publish
         if: steps.local.outputs.version != steps.published.outputs.version
-        run: npm publish --access public
+        run: npm publish --provenance --access public
